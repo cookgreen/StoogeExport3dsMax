@@ -1,0 +1,73 @@
+--------------------------
+Marmoset .mesh file format
+"For Interested Parties"
+Jeff Russell
+2010 8monkey Labs Inc.
+--------------------------
+
+This document is really only useful to programmers who may want to read or
+write 8monkey Marmoset .mesh files. What follows is a detailed description
+of the data layout.
+
+First some data types:
+
+int/uint:	4 byte integer (little endian)
+float:		4 byte IEEE floating point value (little endian)
+short/ushort:	2 byte integer (little endian)
+string:		null character (0) terminated array of single byte ascii characters
+
+With that in hand, the file is laid out like so:
+
+
+//header
+{
+	uint	flags		//typically equal to 0, mostly unused
+	uint	numchunks	//specifies the number of mesh chunks
+}
+
+
+chunk //one chunk is written for each 'numchunks'
+{
+	string	chunkname	//this name is used to match a material entry in the .rig file
+	uint		numvertices	//vertex count for this chunk
+
+	ushort	haspositions //(nonzero means there are positions)
+	float		positions[numvertices * 3]
+			
+	ushort	hasnormals
+	float		normals[numvertices * 3]
+
+	ushort	colorcomponents //(typically 3 or 4, 0 means no colors)
+	float		colors[colorcomponents * numvertices] //(ordering will be r,g,b,a)
+
+	ushort	texcoordsets
+	texcoord //one for each 'texcoordsets'
+	{
+		ushort	texcomponents
+		float		texcoords[texcomponents * numvertices]
+	}
+
+	ushort	tangentcomponents //(typically 0,3, or 4)
+	float		tangents[tangentcomponents * numvertices]
+	
+	ushort	bitangentcomponents //(typically 0,3, or 4)
+	float		bitangents[bitangentcomponents * numvertices]
+
+	ushort	boneweightcount //should always be 4
+	float		boneweights[boneweightcount * numvertices]
+	int		boneindices[boneweightcount * numvertices]
+
+	ushort	genericattribcount
+	generic //one for each 'genericattribcount'
+	{
+		string	name
+		ushort	componentcount
+		float		genericattrib[componentcount * numvertices]
+	}
+
+	uint	indexcount //indices are required, this must be nonzero
+	uint	indices[indexcount]
+}
+
+
+//end of file (thats all folks!)

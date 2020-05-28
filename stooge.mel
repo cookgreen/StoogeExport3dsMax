@@ -1,0 +1,104 @@
+/*
+	Stooge Export MEL script
+	1/30/07 - JDR
+
+	Basically just a wrapper that sets up GUI options and such and passes them
+	to the 'stoogeExport' C++ plugin. The 'stoogeExport' command can still be
+	used as before, this new command is simply for convenience.
+*/
+
+{
+
+global string $stooge_mywin;
+global string $stooge_use_tangents;
+global string $stooge_use_colors;
+global string $stooge_use_bones;
+global string $stooge_use_anim;
+global string $stooge_use_split;
+global string $stooge_use_oldtangents;
+global string $stooge_use_rig;
+global string $stooge_use_highresanim;
+
+global string $stooge_autoanimfile;
+
+global proc stooge()
+{
+$stooge_mywin = `window -title "Stooge Export" -iconName "Stooge Export"`;
+	columnLayout -adjustableColumn true;
+
+	$stooge_use_tangents = `checkBox -label "Write Tangents/Bitangents"`;
+	checkBox -edit -value 1 $stooge_use_tangents;
+	$stooge_use_colors = `checkBox -label "Write Vertex Colors"`;
+	$stooge_use_rig = `checkBox -label "Write Rig File"`;
+	
+	$stooge_use_bones = `checkBox -label "Write Bone Weights and Skeleton"`;
+	$stooge_use_anim = `checkBox -label "Export only Animation"`;
+	
+	$stooge_use_split = `checkBox -label "Split Chunks to Separate Files"`;
+	/*$stooge_use_oldtangents = `checkBox -label "Old Tangent Space Method"`;
+	checkBox -edit -value 1 $stooge_use_oldtangents;*/
+	
+	$stooge_use_highresanim = `checkBox -label "High Res Animation"`;
+	
+	$stooge_autoanimfile = "";
+	button -label "Anim Batch File..." -command ("fileBrowser(\"onAutomateFile\",\"Set Auto File\",\"\",0)");
+	
+ 	button -label "Export" -bgc .7 1 .7 -command ("fileBrowser(\"onExport\",\"Export\",\"\",1)");
+ 	button -label "Cancel" -bgc 1 .75 .75 -command ("deleteUI -window " + $stooge_mywin);
+ 
+showWindow $stooge_mywin;
+window -edit -widthHeight 200 215 $stooge_mywin;
+}
+
+global proc int onAutomateFile( string $filename, string $type )
+{
+	checkBox -edit -value 1 $stooge_use_anim;
+
+	$stooge_autoanimfile = $filename;
+	print $stooge_autoanimfile;
+	return true;
+}
+
+global proc int onExport( string $filename, string $type )
+{
+	string $cmd = "stoogeExport ";
+	
+	if( ! `checkBox -query -value $stooge_use_tangents` )
+	{ $cmd = $cmd + "-notangents "; }
+
+	if( `checkBox -query -value $stooge_use_colors` )
+	{ $cmd = $cmd + "-vertexcolors "; }
+
+	if( ! `checkBox -query -value $stooge_use_rig` )
+	{ $cmd = $cmd + "-norig "; }
+
+	if( `checkBox -query -value $stooge_use_bones` )
+	{ $cmd = $cmd + "-bones "; }
+
+	if( `checkBox -query -value $stooge_use_anim` )
+	{ $cmd = $cmd + "-anim "; }
+
+	if( `checkBox -query -value $stooge_use_split` )
+	{ $cmd = $cmd + "-split "; }
+
+	/*if( `checkBox -query -value $stooge_use_oldtangents` )*/
+	{ $cmd = $cmd + "-oldtangentmethod "; }
+	
+	if( `checkBox -query -value $stooge_use_highresanim` )
+	{ $cmd = $cmd + "-highresanim"; }
+	
+	if( $stooge_autoanimfile != "" )
+	{ $cmd = $cmd + "-af \"" + $stooge_autoanimfile + "\" "; }
+	
+	$cmd = $cmd + "-o \"" + $filename + "\" ";
+
+	print($cmd);
+	deleteUI -window $stooge_mywin;
+	
+	eval($cmd);
+	return true;
+}
+
+stooge();
+
+}

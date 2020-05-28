@@ -1,0 +1,86 @@
+# Copyright (C) Alias Systems,  a division  of  Silicon Graphics Limited and/or
+# its licensors ("Alias").  All rights reserved.  These coded instructions,
+# statements, computer programs, and/or related material (collectively, the
+# "Material") contain unpublished information proprietary to Alias, which is
+# protected by Canadian and US federal copyright law and by international
+# treaties.  This Material may not be disclosed to third parties, or be copied
+# or duplicated, in whole or in part, without the prior written consent of
+# Alias.  ALIAS HEREBY DISCLAIMS ALL WARRANTIES RELATING TO THE MATERIAL,
+# INCLUDING, WITHOUT LIMITATION, ANY AND ALL EXPRESS OR IMPLIED WARRANTIES OF
+# NON-INFRINGEMENT, MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+# IN NO EVENT SHALL ALIAS BE LIABLE FOR ANY DAMAGES WHATSOEVER, WHETHER DIRECT,
+# INDIRECT, SPECIAL, OR PUNITIVE, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE
+# OR OTHER TORTIOUS ACTION, OR IN EQUITY, ARISING OUT OF OR RELATED TO THE
+# ACCESS TO, USE OF, OR RELIANCE UPON THE MATERIAL.
+
+# Change location if you have a non standard install.
+# DEVKIT_LOCATION = /Applications/Alias/mayaX.0/devkit
+DEVKIT_LOCATION = $(MAYA_LOCATION)/../../devkit
+
+# Make sure these are in your path.
+CC			= gcc-3.3
+C++			= g++-3.3
+LD			= g++-3.3
+
+# Settings
+CFLAGS		= -DCC_GNU_ -DOSMac_ -DOSMacOSX_ -DBits32_ -O3 \
+		-DOSMac_MachO_ -fpascal-strings \
+		-mtune=970 -D_LANGUAGE_C_PLUS_PLUS \
+		-include "$(DEVKIT_LOCATION)/include/maya/OpenMayaMac.h" 
+C++FLAGS	= $(CFLAGS) $(WARNFLAGS) $(ERROR_FLAGS) -fno-gnu-keywords
+INCLUDES	= -I. -I"$(DEVKIT_LOCATION)/include" -I../../engine/math
+DYNLIB_LOCATION	= $(MAYA_LOCATION)/MacOS
+LFLAGS		= -fno-gnu-keywords -fpascal-strings -single_module \
+		-dynamiclib -mtune=970 -framework CoreFoundation
+LFLAGS_GL	= -framework OpenGL -framework AGL
+EXT		= lib
+
+LREMAP = \
+	-dylib_file @executable_path/libBase.dylib:"$(DYNLIB_LOCATION)/libBase.dylib" \
+	-dylib_file @executable_path/libSubdivEngine.dylib:"$(DYNLIB_LOCATION)/libSubdivEngine.dylib" \
+	-dylib_file @executable_path/libGeometryEngine.dylib:"$(DYNLIB_LOCATION)/libGeometryEngine.dylib" \
+	-dylib_file @executable_path/libAG.dylib:"$(DYNLIB_LOCATION)/libAG.dylib" \
+	-dylib_file @executable_path/libExplorerSlice.dylib:"$(DYNLIB_LOCATION)/libExplorerSlice.dylib" \
+	-dylib_file @executable_path/libShared.dylib:"$(DYNLIB_LOCATION)/libShared.dylib" \
+	-dylib_file @executable_path/libNurbsEngine.dylib:"$(DYNLIB_LOCATION)/libNurbsEngine.dylib" \
+	-dylib_file @executable_path/libSubdiv.dylib:"$(DYNLIB_LOCATION)/libSubdiv.dylib" \
+	-dylib_file @executable_path/libDataModel.dylib:"$(DYNLIB_LOCATION)/libDataModel.dylib" \
+	-dylib_file @executable_path/libNurbs.dylib:"$(DYNLIB_LOCATION)/libNurbs.dylib" \
+	-dylib_file @executable_path/libExtensionLayer.dylib:"$(DYNLIB_LOCATION)/libExtensionLayer.dylib" \
+	-dylib_file @executable_path/libPolyEngine.dylib:"$(DYNLIB_LOCATION)/libPolyEngine.dylib" \
+	-dylib_file @executable_path/libCommandEngine.dylib:"$(DYNLIB_LOCATION)/libCommandEngine.dylib" \
+	-dylib_file @executable_path/libDependEngine.dylib:"$(DYNLIB_LOCATION)/libDependEngine.dylib" \
+	-dylib_file @executable_path/libPoly.dylib:"$(DYNLIB_LOCATION)/libPoly.dylib" \
+	-dylib_file @executable_path/libSubdivGeom.dylib:"$(DYNLIB_LOCATION)/libSubdivGeom.dylib" \
+	-dylib_file @executable_path/libModelSlice.dylib:"$(DYNLIB_LOCATION)/libModelSlice.dylib" \
+	-dylib_file @executable_path/libRenderModel.dylib:"$(DYNLIB_LOCATION)/libRenderModel.dylib" \
+	-dylib_file @executable_path/lib3dGraphics.dylib:"$(DYNLIB_LOCATION)/lib3dGraphics.dylib" \
+	-dylib_file @executable_path/libImage.dylib:"$(DYNLIB_LOCATION)/libImage.dylib" \
+	-dylib_file @executable_path/libAnimEngine.dylib:"$(DYNLIB_LOCATION)/libAnimEngine.dylib" \
+	-dylib_file @executable_path/libHWRender.dylib:"$(DYNLIB_LOCATION)/libHWRender.dylib" \
+	-dylib_file @executable_path/libHWFoundation.dylib:"$(DYNLIB_LOCATION)/libHWFoundation.dylib" \
+	-dylib_file @executable_path/libHWGL.dylib:"$(DYNLIB_LOCATION)/libHWGL.dylib" \
+	-dylib_file @executable_path/libNurbsSlice.dylib:"$(DYNLIB_LOCATION)/libNurbsSlice.dylib" \
+	-dylib_file @executable_path/libDependCommand.dylib:"$(DYNLIB_LOCATION)/libDependCommand.dylib" \
+	-dylib_file @executable_path/libPolySlice.dylib:"$(DYNLIB_LOCATION)/libPolySlice.dylib" \
+	-dylib_file @executable_path/libKinSlice.dylib:"$(DYNLIB_LOCATION)/libKinSlice.dylib" \
+	-dylib_file @executable_path/libDynSlice.dylib:"$(DYNLIB_LOCATION)/libDynSlice.dylib" \
+	-dylib_file @executable_path/libDeformSlice.dylib:"$(DYNLIB_LOCATION)/libDeformSlice.dylib" \
+	-dylib_file @executable_path/libAnimSlice.dylib:"$(DYNLIB_LOCATION)/libAnimSlice.dylib" \
+	-dylib_file @executable_path/libManips.dylib:"$(DYNLIB_LOCATION)/libManips.dylib" \
+	-dylib_file @executable_path/libModelUISlice.dylib:"$(DYNLIB_LOCATION)/libModelUISlice.dylib" \
+	-dylib_file @executable_path/libSharedUI.dylib:"$(DYNLIB_LOCATION)/libSharedUI.dylib" \
+	-dylib_file @executable_path/libImageUI.dylib:"$(DYNLIB_LOCATION)/libImageUI.dylib" \
+	-dylib_file @executable_path/libRenderSlice.dylib:"$(DYNLIB_LOCATION)/libRenderSlice.dylib" \
+	-dylib_file @executable_path/libPopLib.dylib:"$(DYNLIB_LOCATION)/libPopLib.dylib" \
+	-dylib_file @executable_path/libIMF.dylib:"$(DYNLIB_LOCATION)/libIMF.dylib" \
+	-dylib_file @executable_path/libDynUISlice.dylib:"$(DYNLIB_LOCATION)/libDynUISlice.dylib" \
+	-dylib_file @executable_path/libxpcom.dylib:"$(DYNLIB_LOCATION)/libxpcom.dylib" \
+	-dylib_file @executable_path/libnspr4.dylib:"$(DYNLIB_LOCATION)/libnspr4.dylib" \
+	-dylib_file @executable_path/libplc4.dylib:"$(DYNLIB_LOCATION)/libplc4.dylib" \
+	-dylib_file @executable_path/libplds4.dylib:"$(DYNLIB_LOCATION)/libplds4.dylib" \
+	-dylib_file @executable_path/libFoundation.dylib:"$(DYNLIB_LOCATION)/libFoundation.dylib" \
+	-dylib_file @executable_path/libAppVersion.dylib:"$(DYNLIB_LOCATION)/libAppVersion.dylib"
+
+LIBS		= $(LFLAGS) -L"$(DYNLIB_LOCATION)" $(LREMAP) -lFoundation -lOpenMaya -lOpenMayaAnim
+LIBS_GL_EXTRA	= $(LFLAGS_GL)

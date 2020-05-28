@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stoogeExport", "stoogeExport.vcproj", "{090C0290-9B16-485E-BC16-15F25627FDD4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release2012|Win32 = Release2012|Win32
+		Release2012|x64 = Release2012|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{090C0290-9B16-485E-BC16-15F25627FDD4}.Release2012|Win32.ActiveCfg = Release2012|Win32
+		{090C0290-9B16-485E-BC16-15F25627FDD4}.Release2012|Win32.Build.0 = Release2012|Win32
+		{090C0290-9B16-485E-BC16-15F25627FDD4}.Release2012|x64.ActiveCfg = Release2012|x64
+		{090C0290-9B16-485E-BC16-15F25627FDD4}.Release2012|x64.Build.0 = Release2012|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

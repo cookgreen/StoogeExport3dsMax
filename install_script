@@ -1,0 +1,2 @@
+rm /Users/Shared/Alias/maya/plug-ins/stoogeExportMaya.lib
+cp stoogeExportMaya.lib /Users/Shared/Alias/maya/plug-ins/
